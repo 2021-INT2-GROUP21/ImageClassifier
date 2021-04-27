@@ -3,7 +3,7 @@ from torchvision import datasets, transforms
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data import random_split
 
-batch_size = 16
+batch_size = 10
 transform = transforms.Compose(
     [
         transforms.ToTensor(),
