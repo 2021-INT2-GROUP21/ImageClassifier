@@ -1,8 +1,5 @@
-from CIFAR10_Model import CIFAR10Model
+from models.CIFAR10_Model import CIFAR10Model
 from util import *
-import torch
-import torchvision
-import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 
 '''

@@ -1,14 +1,13 @@
-from CIFAR10_Model import CIFAR10Model
 from util import *
 
 from torch import optim
 from torch import nn
 
 
-def train():
+def train(input_model):
     # create model
     device = get_device()
-    model = CIFAR10Model().to(device)
+    model = input_model.to(device)
     # load dataset
     train_loader, val_loader, classes = get_train_data()
     # define optimiser, Stochastic Gradient Descent
@@ -27,7 +26,7 @@ def train():
 
         losses = list()
         accuracies = list()
-        for batch in train_loader:
+        for i, batch in enumerate(train_loader, 0):
             x, y = batch[0].to(device), batch[1].to(device)
             out = model(x)
             ce_loss = loss(out, y)
@@ -37,6 +36,9 @@ def train():
 
             losses.append(ce_loss.item())
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
+            # for some reason pycharm doesn't support \r so this only shows in a terminal
+            # TODO: Make this a cleaner solution to seeing progress
+            print("progress: " + str(int((i/len(train_loader))*100)) + "%", end='\r')
         print(
             f'Epoch {epoch + 1},'
             f' train loss: {torch.tensor(losses).mean():.2f},'
