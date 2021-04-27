@@ -14,14 +14,13 @@ def train():
     # define optimiser, Stochastic Gradient Descent
     params = model.parameters()
     optimiser = optim.SGD(params, lr=1e-2)
-    # define loss
-    # TODO: I would prefer to use MSEloss instead of CEloss thus change the model to cater to a MSEloss training. Also if you want to use MSE loss, batch_size must equal model output size, 10.
-    # loss = nn.MSELoss()
+    # define loss TODO: I would prefer to use MSEloss instead of CEloss thus change the model to cater to a MSEloss
+    #  training. Also if you want to use MSE loss, batch_size must equal model output size, 10. loss = nn.MSELoss()
     loss = nn.CrossEntropyLoss()
 
     # training and validation loop
 
-    num_epochs = 6
+    num_epochs = 16
     last_val_acc = 0
 
     for epoch in range(num_epochs):
@@ -39,7 +38,10 @@ def train():
             losses.append(ce_loss.item())
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
         print(
-            f'Epoch {epoch + 1}, train loss: {torch.tensor(losses).mean():.2f}, train acc: {torch.tensor(accuracies).mean():.2f}')
+            f'Epoch {epoch + 1},'
+            f' train loss: {torch.tensor(losses).mean():.2f},'
+            f' train acc: {torch.tensor(accuracies).mean():.2f}'
+        )
 
         losses = list()
         accuracies = list()
@@ -52,7 +54,11 @@ def train():
             losses.append(ce_loss.item())
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
         current_val_acc = torch.tensor(accuracies).mean()
-        print(f'Epoch {epoch + 1}, validation loss: {torch.tensor(losses).mean():.2f}, validation acc: {current_val_acc:.2f}')
+        print(
+            f'Epoch {epoch + 1},'
+            f' validation loss: {torch.tensor(losses).mean():.2f},'
+            f' validation acc: {current_val_acc:.2f}'
+        )
 
         if current_val_acc <= last_val_acc:
             break
