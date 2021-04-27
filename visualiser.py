@@ -6,8 +6,11 @@ from torch.utils.tensorboard import SummaryWriter
 In command line run tensorboard --logdir=<FilePath to ./ImageClassifier>
 run this file and go to the address given.
 '''
+
+
 def getWriter():
     return SummaryWriter('runs/CIFAR10_Model')
+
 
 def main():
     writer = getWriter()
@@ -26,4 +29,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

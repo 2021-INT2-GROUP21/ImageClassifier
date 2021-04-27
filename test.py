@@ -25,12 +25,12 @@ def test(input_model):
 
     with open(get_save_path(trained_model) + ".txt", "w") as f:
         for i in range(10):
-            #print('Accuracy of %10s : %2d %%' % (
+            # print('Accuracy of %10s : %2d %%' % (
             #    classes[i], 100 * class_correct[i] / class_total[i]))
             f.write('Accuracy of %10s : %2d %%\n' % (
                 classes[i], 100 * class_correct[i] / class_total[i]))
 
         print('Accuracy : %2d %%' % (
-            100 * sum(class_correct) / sum(class_total)))
+                100 * sum(class_correct) / sum(class_total)))
         f.write('\nAccuracy of %10s : %2d %%' % (
             "total", 100 * sum(class_correct) / sum(class_total)))

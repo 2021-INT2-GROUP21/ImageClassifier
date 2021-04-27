@@ -43,4 +43,3 @@ def get_test_data():
 
 def get_save_path(model):
     return './trained_models/' + model.__class__.__name__ + '.pt'
-

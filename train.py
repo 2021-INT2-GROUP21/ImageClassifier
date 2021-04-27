@@ -38,7 +38,7 @@ def train(input_model):
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
             # for some reason pycharm doesn't support \r so this only shows in a terminal
             # TODO: Make this a cleaner solution to seeing progress
-            print("progress: " + str(int((i/len(train_loader))*100)) + "%", end='\r')
+            print("progress: " + str(int((i / len(train_loader)) * 100)) + "%", end='\r')
         print(
             f'Epoch {epoch + 1},'
             f' train loss: {torch.tensor(losses).mean():.2f},'
@@ -70,5 +70,3 @@ def train(input_model):
 
     torch.save(model.state_dict(), get_save_path(model))
     print("Trained model " + model.__class__.__name__ + " saved to " + get_save_path(model))
-
-
