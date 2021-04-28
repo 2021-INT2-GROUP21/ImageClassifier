@@ -12,12 +12,13 @@ class Combined(nn.Module):
         super().__init__()
 
         self.two_step = TwoStep()
-        if os.path.isfile(get_save_path(self.two_step)):
-            self.two_step.load_state_dict(torch.load(get_save_path(self.two_step)))
-
         self.split = SplitClassifier()
-        if os.path.isfile(get_save_path(self.split)):
-            self.split.load_state_dict(torch.load(get_save_path(self.split)))
+
+        if not os.path.isfile('./trained_models/Combined.pt'):
+            if os.path.isfile(get_save_path(self.two_step)):
+                self.two_step.load_state_dict(torch.load(get_save_path(self.two_step)))
+            if os.path.isfile(get_save_path(self.split)):
+                self.split.load_state_dict(torch.load(get_save_path(self.split)))
 
         self.final_dense = nn.Sequential(
             nn.Linear(20, 10),
