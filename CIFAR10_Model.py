@@ -1,8 +1,8 @@
 from torch import nn
 
 
-# flexible model
-# TODO: this is a copied model of the internet, we should probably look at the theory of it and try to build our own. As pointed below, build a model that can use MSE loss.
+# flexible model TODO: this is a copied model of the internet, we should probably look at the theory of it and try to
+#  build our own. As pointed below, build a model that can use MSE loss.
 class CIFAR10Model(nn.Module):
     def __init__(self):
         super().__init__()
@@ -34,12 +34,12 @@ class CIFAR10Model(nn.Module):
         )
 
         self.fc_layer = nn.Sequential(
-            nn.Dropout(p=0.1),
+            nn.Dropout(p=0.05),
             nn.Linear(4096, 1024),
             nn.ReLU(inplace=True),
             nn.Linear(1024, 512),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.1),
+            nn.Dropout(p=0.05),
             nn.Linear(512, 10)
         )
 

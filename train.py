@@ -53,7 +53,9 @@ def train():
 
             losses.append(ce_loss.item())
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
-        current_val_acc = torch.tensor(accuracies).mean()
+
+        current_val_acc = round(float(torch.tensor(accuracies).mean()), 2)
+
         print(
             f'Epoch {epoch + 1},'
             f' validation loss: {torch.tensor(losses).mean():.2f},'
@@ -64,7 +66,10 @@ def train():
             break
         else:
             last_val_acc = current_val_acc
-    print(f'Training complete in {epoch + 1} iteration with training accuracy of {100 * last_val_acc:.2f}%')
+    print(
+        f'Training complete in {epoch + 1}'
+        f' iteration with training accuracy of {100 * last_val_acc:.2f}%'
+        )
 
     torch.save(model.state_dict(), get_save_path(model))
     print("Trained model " + model.__class__.__name__ + " saved to " + get_save_path(model))

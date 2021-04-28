@@ -132,6 +132,8 @@ dmypy.json
 .idea/
 
 # Dataset and Model
+data/
+runs/
 .data/
 *.pth
 *.pt
