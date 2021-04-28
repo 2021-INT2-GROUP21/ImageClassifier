@@ -38,7 +38,7 @@ def test(input_model):
 
     if not os.path.isfile(get_save_path(trained_model) + ".csv"):
         with open(get_save_path(trained_model) + ".csv", "a") as f:
-            f.write("plane,car,bird,cat,deer,dog,frog,horse,ship,truck,total")
+            f.write("plane,car,bird,cat,deer,dog,frog,horse,ship,truck,total\n")
 
     with open(get_save_path(trained_model) + ".csv", "a") as f:
         for i in range(10):
