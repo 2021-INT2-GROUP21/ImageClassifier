@@ -1,4 +1,4 @@
-from models.CIFAR10_Model import CIFAR10Model
+from models.TripleConvBlocks import CIFAR10Model
 from util import *
 from torch.utils.tensorboard import SummaryWriter
 
