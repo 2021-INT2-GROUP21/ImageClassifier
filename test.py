@@ -1,4 +1,5 @@
 from util import *
+from models.TripleConvBlocks import CIFAR10Model
 
 
 def test(input_model):

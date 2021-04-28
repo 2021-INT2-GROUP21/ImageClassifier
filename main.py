@@ -1,7 +1,7 @@
 from train import *
 from test import *
 
-from models.CIFAR10_Model import *
+from models.TripleConvBlocks import *
 from models.SingleConvLayer import *
 
 
