@@ -1,4 +1,7 @@
+import os
+
 from util import *
+from test import *
 
 from torch import optim
 from torch import nn
@@ -8,6 +11,8 @@ def train(input_model):
     # create model
     device = get_device()
     model = input_model.to(device)
+    if os.path.isfile(get_save_path(model)):
+        model.load_state_dict(torch.load(get_save_path(model)))
     # load dataset
     train_loader, val_loader, classes = get_train_data()
     # define optimiser, Stochastic Gradient Descent
@@ -19,7 +24,7 @@ def train(input_model):
 
     # training and validation loop
 
-    num_epochs = 16
+    num_epochs = 32
     last_val_acc = 0
 
     for epoch in range(num_epochs):
@@ -62,10 +67,14 @@ def train(input_model):
             f' validation acc: {current_val_acc:.2f}'
         )
 
-        if current_val_acc <= last_val_acc:
+        torch.save(model.state_dict(), get_save_path(model))
+        test(model)
+
+        if current_val_acc <= last_val_acc - 0.01:
             break
         else:
             last_val_acc = current_val_acc
+
     print(f'Training complete in {epoch + 1} iteration with training accuracy of {100 * last_val_acc:.2f}%')
 
     torch.save(model.state_dict(), get_save_path(model))
