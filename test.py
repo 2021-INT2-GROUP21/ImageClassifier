@@ -1,13 +1,13 @@
 from util import *
-from CIFAR10_Model import CIFAR10Model
+from models.CIFAR10_Model import CIFAR10Model
 
 
-def test():
+def test(input_model):
     test_loader, classes = get_test_data()
 
     # create model
     device = get_device()
-    trained_model = CIFAR10Model().to(device)
+    trained_model = input_model.to(device)
     trained_model.load_state_dict(torch.load(get_save_path(trained_model)))
 
     class_correct = list(0. for i in range(10))
@@ -25,12 +25,12 @@ def test():
 
     with open(get_save_path(trained_model) + ".txt", "w") as f:
         for i in range(10):
-            print('Accuracy of %10s : %2d %%' % (
-                classes[i], 100 * class_correct[i] / class_total[i]))
+            # print('Accuracy of %10s : %2d %%' % (
+            #    classes[i], 100 * class_correct[i] / class_total[i]))
             f.write('Accuracy of %10s : %2d %%\n' % (
                 classes[i], 100 * class_correct[i] / class_total[i]))
 
-        print('\nAccuracy of %10s : %2d %%' % (
-            "total", 100 * sum(class_correct) / sum(class_total)))
+        print('Accuracy : %2d %%' % (
+                100 * sum(class_correct) / sum(class_total)))
         f.write('\nAccuracy of %10s : %2d %%' % (
             "total", 100 * sum(class_correct) / sum(class_total)))
