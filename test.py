@@ -1,5 +1,6 @@
+import os
+
 from util import *
-from models.TripleConvBlocks import CIFAR10Model
 
 
 def test(input_model):
@@ -34,3 +35,13 @@ def test(input_model):
                 100 * sum(class_correct) / sum(class_total)))
         f.write('\nAccuracy of %10s : %2d %%' % (
             "total", 100 * sum(class_correct) / sum(class_total)))
+
+    if not os.path.isfile(get_save_path(trained_model) + ".csv"):
+        with open(get_save_path(trained_model) + ".csv", "a") as f:
+            f.write("plane,car,bird,cat,deer,dog,frog,horse,ship,truck,total\n")
+
+    with open(get_save_path(trained_model) + ".csv", "a") as f:
+        for i in range(10):
+            f.write(str(100 * class_correct[i] / class_total[i]) + ",")
+
+        f.write(str(100 * sum(class_correct) / sum(class_total)) + ",\n")
