@@ -3,13 +3,15 @@ import torch
 
 
 class SplitClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self, splits):
         super().__init__()
+
+        self.splits = splits
 
         self.split_conv = nn.ModuleList()
         self.split_dense = nn.ModuleList()
 
-        for i in range(10):
+        for i in range(self.splits):
             self.split_conv.append(
                 nn.Sequential(
                     # Conv Layer block 1
@@ -32,24 +34,24 @@ class SplitClassifier(nn.Module):
                         nn.Dropout2d(p=0.05),
                     ),
                     # Conv Layer block 3
-                    nn.Sequential(
-                        nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=(1, 1)),
-                        nn.BatchNorm2d(128),
-                        nn.ReLU(inplace=True),
-                        nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=(1, 1)),
-                        nn.BatchNorm2d(128),
-                        nn.ReLU(inplace=True),
-                        nn.MaxPool2d(kernel_size=2, stride=2),
-                        nn.Dropout2d(p=0.03),
-                    ),
+                    #nn.Sequential(
+                    #    nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=(1, 1)),
+                    #    nn.BatchNorm2d(128),
+                    #    nn.ReLU(inplace=True),
+                    #    nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=(1, 1)),
+                    #    nn.BatchNorm2d(128),
+                    #    nn.ReLU(inplace=True),
+                    #    nn.MaxPool2d(kernel_size=2, stride=2),
+                    #    nn.Dropout2d(p=0.03),
+                    #),
                 )
             )
 
-        for i in range(10):
+        for i in range(self.splits):
             self.split_dense.append(
                 # Dense Layer
                 nn.Sequential(
-                    nn.Linear(128*4*4, 512),
+                    nn.Linear(64*8*8, 512),
                     nn.ReLU(inplace=True),
                     nn.Dropout(p=0.05),
                     nn.Linear(512, 64),
@@ -58,25 +60,25 @@ class SplitClassifier(nn.Module):
             )
 
         self.final_dense = nn.Sequential(
-            nn.Linear(640, 100),
+            nn.Linear(64 * self.splits, 10 * self.splits),
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.08),
-            nn.Linear(100, 10),
+            nn.Linear(10 * self.splits, 10),
         )
 
     def forward(self, x):
         # Flatten images into vectors
         # conv layers
         xs = list()
-        for i in range(10):
+        for i in range(self.splits):
             xs.append(self.split_conv[i](x))
 
         # flatten
-        for i in range(10):
+        for i in range(self.splits):
             xs[i] = xs[i].view(xs[i].size(0), -1)
 
         # split dense
-        for i in range(10):
+        for i in range(self.splits):
             xs[i] = self.split_dense[i](xs[i])
 
         # combine outputs from all splits and run in dense

@@ -49,4 +49,6 @@ def get_test_data():
 
 
 def get_save_path(model):
+    if isinstance(model, SplitClassifier):
+        return './trained_models/' + model.__class__.__name__ + '_' + str(model.splits) + '.pt'
     return './trained_models/' + model.__class__.__name__ + '.pt'

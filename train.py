@@ -24,7 +24,7 @@ def train(input_model):
 
     # training and validation loop
 
-    num_epochs = 32
+    num_epochs = 10
     last_val_acc = 0
 
     plt_epoch_loss = []
@@ -60,16 +60,6 @@ def train(input_model):
             with torch.no_grad():
                 out = model(x)
             ce_loss = loss(out, y)
-
-            losses.append(ce_loss.item())
-            accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
-
-        current_val_acc = round(float(torch.tensor(accuracies).mean()), 2)
-        print(
-            f'Epoch {epoch + 1},'
-            f' validation loss: {torch.tensor(losses).mean():.2f},'
-            f' validation acc: {current_val_acc:.2f}'
-        )
 
         torch.save(model.state_dict(), get_save_path(model))
         test(model)
