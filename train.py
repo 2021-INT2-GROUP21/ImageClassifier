@@ -77,7 +77,7 @@ def train(input_model):
         if current_val_acc <= last_val_acc or lr <= 1e-4:
             break
         else:
-            if ((current_val_acc - last_val_acc)/current_val_acc) <= 0.1:
+            if ((current_val_acc - last_val_acc)/current_val_acc) <= lr*10:
                 lr = lr * 1e-1
                 optimiser = optim.SGD(model.parameters(), lr=lr)
                 print(f'optimiser lr={lr}')
