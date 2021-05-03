@@ -26,7 +26,6 @@ def main(in_model):
 
     batch_size=32
     torchinfo.summary(model, input_size=(batch_size, 3, 32, 32))
-    plt_graph()
 
 
 def plt_graph():

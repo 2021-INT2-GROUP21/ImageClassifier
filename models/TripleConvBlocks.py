@@ -1,8 +1,6 @@
 from torch import nn
 
 
-# flexible model TODO: this is a copied model of the internet, we should probably look at the theory of it and try to
-#  build our own. As pointed below, build a model that can use MSE loss.
 class CIFAR10Model(nn.Module):
     def __init__(self):
         super().__init__()
@@ -44,14 +42,13 @@ class CIFAR10Model(nn.Module):
         )
 
     def forward(self, x):
-        # Flatten images into vectors
         # conv layers
         x = self.conv_layer(x)
 
-        # flatten
+        # flatten to 1 dimension
         x = x.view(x.size(0), -1)
 
-        # fc layer
+        # feature layer
         x = self.fc_layer(x)
 
         return x

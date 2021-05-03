@@ -69,7 +69,7 @@ def train(input_model):
             losses.append(ce_loss.item())
             accuracies.append(y.eq(out.detach().argmax(dim=1)).float().mean())
 
-        current_val_acc = round(float(torch.tensor(accuracies).mean()), 2)
+        current_val_acc = float(torch.tensor(accuracies).mean())
         print(
             f'Epoch {epoch + 1},'
             f' validation loss: {torch.tensor(losses).mean():.2f},'
@@ -82,7 +82,7 @@ def train(input_model):
         torch.save(model.state_dict(), get_save_path(model))
         test(model)
 
-        if current_val_acc <= last_val_acc or lr <= 1e-4:
+        if current_val_acc <= last_val_acc or lr <= 1e-5:
             break
         else:
             if ((current_val_acc - last_val_acc)/current_val_acc) <= lr*10:
