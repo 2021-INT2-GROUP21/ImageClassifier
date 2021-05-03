@@ -1,0 +1,12 @@
+Accuracy of   airplane : 100 %
+Accuracy of automobile : 93 %
+Accuracy of       bird : 81 %
+Accuracy of        cat : 95 %
+Accuracy of       deer : 81 %
+Accuracy of        dog : 90 %
+Accuracy of       frog : 82 %
+Accuracy of      horse : 100 %
+Accuracy of       ship : 87 %
+Accuracy of      truck : 85 %
+
+Accuracy of      total : 90 %

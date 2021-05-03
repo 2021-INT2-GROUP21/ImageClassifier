@@ -30,8 +30,10 @@ def train(input_model):
     num_epochs = 512
     last_val_acc = 0
 
-    plt_epoch_loss = []
-    plt_epoch_accuracy = []
+    plt_epoch_tloss = ['tloss']
+    plt_epoch_taccuracy = ['taccuracy']
+    plt_epoch_vloss = ['vloss']
+    plt_epoch_vaccuracy = ['vaccuracy']
 
     print(f'Starting training with parameters: lr={lr}, num epochs={num_epochs}')
 
@@ -58,6 +60,8 @@ def train(input_model):
             f' train acc: {torch.tensor(accuracies).mean():.2f}'
         )
 
+        plt_epoch_tloss.append(float(torch.tensor(losses).mean()))
+        plt_epoch_taccuracy.append(float(torch.tensor(accuracies).mean()))
         # for batch in val_loader:
         #     x, y = batch[0].to(device), batch[1].to(device)
         #     with torch.no_grad():
@@ -85,3 +89,10 @@ def train(input_model):
     # redundant saving if it is being saved to call the test
     # torch.save(model.state_dict(), get_save_path(model))
     print("Trained model " + model.__class__.__name__ + " saved to " + get_save_path(model))
+
+    import csv
+    with open("datapoints.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows([plt_epoch_taccuracy,plt_epoch_tloss,plt_epoch_vaccuracy,plt_epoch_vloss])
+    from visualiser import plt_graph
+    plt_graph()
