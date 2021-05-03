@@ -60,6 +60,9 @@ def train(input_model):
         plt_epoch_tloss.append(float(torch.tensor(losses).mean()))
         plt_epoch_taccuracy.append(float(torch.tensor(accuracies).mean()))
 
+        losses = []
+        accuracies = []
+
         for batch in val_loader:
             x, y = batch[0].to(device), batch[1].to(device)
             with torch.no_grad():
