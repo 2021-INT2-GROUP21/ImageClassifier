@@ -20,7 +20,7 @@ class SplitClassifier(nn.Module):
                         nn.BatchNorm2d(32),
                         nn.ReLU(inplace=True),
                         nn.MaxPool2d(kernel_size=2, stride=2),
-                        nn.Dropout2d(p=0.01),
+                        #nn.Dropout2d(p=0.5),
                     ),
                     # Conv Layer block 2
                     nn.Sequential(
@@ -28,10 +28,10 @@ class SplitClassifier(nn.Module):
                         nn.BatchNorm2d(64),
                         nn.ReLU(inplace=True),
                         nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(3, 3), padding=(1, 1)),
-                        nn.BatchNorm2d(64),
+                        #nn.BatchNorm2d(64),
                         nn.ReLU(inplace=True),
                         nn.MaxPool2d(kernel_size=2, stride=2),
-                        nn.Dropout2d(p=0.05),
+                        nn.Dropout2d(p=0.5),
                     ),
                     # Conv Layer block 3
                     #nn.Sequential(
@@ -53,7 +53,7 @@ class SplitClassifier(nn.Module):
                 nn.Sequential(
                     nn.Linear(64*8*8, 512),
                     nn.ReLU(inplace=True),
-                    nn.Dropout(p=0.05),
+                    nn.Dropout(p=0.5),
                     nn.Linear(512, 64),
                     nn.ReLU(inplace=True),
                 ),
@@ -62,7 +62,7 @@ class SplitClassifier(nn.Module):
         self.final_dense = nn.Sequential(
             nn.Linear(64 * self.splits, 10 * self.splits),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.08),
+            nn.Dropout(p=0.5),
             nn.Linear(10 * self.splits, 10),
         )
 

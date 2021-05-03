@@ -17,14 +17,16 @@ def train(input_model):
     train_loader, val_loader, classes = get_train_data()
     # define optimiser, Stochastic Gradient Descent
     params = model.parameters()
-    lr = 1e-2
+    # starting lr
+    lr = 0.9
     optimiser = optim.SGD(params, lr=lr)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimiser, verbose=True, threshold=0.01, factor=0.5, patience=3)
 
     loss = nn.CrossEntropyLoss()
 
     # training and validation loop
 
-    num_epochs = 10
+    num_epochs = 512
     last_val_acc = 0
 
     plt_epoch_loss = []
@@ -51,32 +53,34 @@ def train(input_model):
             print("progress: " + str(int((i / len(train_loader)) * 100)) + "%", end='\r')
         print(
             f'Epoch {epoch + 1},'
-            f' train loss: {torch.tensor(losses).mean():.2f},'
+            f' train loss: {torch.tensor(losses).mean():.5f},'
             f' train acc: {torch.tensor(accuracies).mean():.2f}'
         )
 
-        for batch in val_loader:
-            x, y = batch[0].to(device), batch[1].to(device)
-            with torch.no_grad():
-                out = model(x)
-            ce_loss = loss(out, y)
+        # for batch in val_loader:
+        #     x, y = batch[0].to(device), batch[1].to(device)
+        #     with torch.no_grad():
+        #         out = model(x)
+        #     ce_loss = loss(out, y)
 
         torch.save(model.state_dict(), get_save_path(model))
-        test(model)
+        #test(model)
 
-        if current_val_acc <= last_val_acc or lr <= 1e-4:
-            break
-        else:
-            if ((current_val_acc - last_val_acc)/current_val_acc) <= 0.1:
-                lr = lr * 1e-1
-                optimiser = optim.SGD(model.parameters(), lr=lr)
-                print(f'optimiser lr={lr}')
-            last_val_acc = current_val_acc
+        scheduler.step(torch.tensor(losses).mean())
+
+        # if current_val_acc <= last_val_acc or lr <= 1e-4:
+        #    break
+        # else:
+        #    if ((current_val_acc - last_val_acc)/current_val_acc) <= 0.1:
+        #        lr = lr * 1e-1
+        #        optimiser = optim.SGD(model.parameters(), lr=lr)
+        #        print(f'optimiser lr={lr}')
+        #    last_val_acc = current_val_acc
     print(
         f'Training complete in {epoch + 1}'
         f' iteration with training accuracy of {100 * last_val_acc:.2f}%'
-        )
+    )
 
-    #redundant saving if it is being saved to call the test
-    #torch.save(model.state_dict(), get_save_path(model))
+    # redundant saving if it is being saved to call the test
+    # torch.save(model.state_dict(), get_save_path(model))
     print("Trained model " + model.__class__.__name__ + " saved to " + get_save_path(model))
