@@ -5,9 +5,7 @@ from models.Combined import *
 
 
 def main():
-    while True:
-        for i in range(1, 10, 1):
-            train(SplitClassifier(i))
+    train(SplitClassifier(5))
 
     #train(TwoStep())
     #test(TwoStep())

@@ -6,6 +6,8 @@ from torch.utils.data import random_split, ConcatDataset
 from models.SplitClassifier import *
 from models.ModularClassifier import *
 
+batch_size = 32
+
 transform = transforms.Compose(
     [
         transforms.ToTensor(),

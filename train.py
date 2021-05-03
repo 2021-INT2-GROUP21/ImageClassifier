@@ -11,7 +11,7 @@ def train(input_model):
     # create model
     device = get_device()
     model = input_model.to(device)
-    #if os.path.isfile(get_save_path(model)):
+    # if os.path.isfile(get_save_path(model)):
     #    model.load_state_dict(torch.load(get_save_path(model)))
     # load dataset
     train_loader, val_loader, classes = get_train_data()
@@ -20,7 +20,8 @@ def train(input_model):
     # starting lr
     lr = 0.9
     optimiser = optim.SGD(params, lr=lr)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimiser, verbose=True, threshold=0.01, factor=0.5, patience=3)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimiser, verbose=True, threshold=0.01, factor=0.5,
+                                                     patience=3)
 
     loss = nn.CrossEntropyLoss()
 
@@ -64,7 +65,7 @@ def train(input_model):
         #     ce_loss = loss(out, y)
 
         torch.save(model.state_dict(), get_save_path(model))
-        #test(model)
+        test(model)
 
         scheduler.step(torch.tensor(losses).mean())
 
