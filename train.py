@@ -18,7 +18,7 @@ def train(input_model):
     # define optimiser, Stochastic Gradient Descent
     params = model.parameters()
     # starting lr
-    lr = 0.9
+    lr = 0.2
     optimiser = optim.SGD(params, lr=lr)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimiser, verbose=True, threshold=0.01, factor=0.5,
                                                      patience=3)
